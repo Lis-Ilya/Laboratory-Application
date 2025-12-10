@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5ff03e87-3766-46d8-b750-6cc97b625f01" name="Changes" comment="Initial commit: создана структура проекта">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/encryption.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/encryption.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/login_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/login_dialog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/main_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/student_form.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/student_form.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,9 +42,13 @@
 }]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/app/database.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/app/encryption.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/app/utils.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/config/settings.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/generate_key.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/gui/login_dialog.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/gui/main_window.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/gui/student_form.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/main.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/run_tests.py" root0="SKIP_INSPECTION" />
   </component>
@@ -53,10 +62,13 @@
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="sortByType" value="true" />
+    <option name="sortKey" value="BY_TYPE" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.generate_key.executor": "Run",
     "Python.main.executor": "Run",
     "Python.run_tests.executor": "Run",
     "Python.test_database.executor": "Run",
@@ -75,7 +87,29 @@
       <recent name="C:\Нора лисенка\Институт\ИТиП\Laboratory Application" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test_db_connection">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="generate_key" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Laboratory Application" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/generate_key.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Laboratory Application" />
       <option name="ENV_FILES" value="" />
@@ -164,35 +198,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test_setup" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Laboratory Application" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_setup.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test_db_connection" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.generate_key" />
+        <item itemvalue="Python.test_db_connection" />
         <item itemvalue="Python.run_tests" />
         <item itemvalue="Python.test_database" />
-        <item itemvalue="Python.test_setup" />
       </list>
     </recent_temporary>
   </component>
@@ -227,7 +239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765375773852</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Initial commit: создана структура проекта">
+      <option name="closed" value="true" />
+      <created>1765382579327</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1765382579327</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

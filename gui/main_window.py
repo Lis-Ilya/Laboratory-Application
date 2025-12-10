@@ -8,6 +8,9 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QIcon
 import logging
 
+from gui.student_form import StudentForm
+from app.encryption import get_encryptor
+
 logger = logging.getLogger(__name__)
 
 
@@ -212,14 +215,145 @@ class MainWindow(QMainWindow):
 
     # Методы-заглушки для кнопок (реализуем позже)
     def add_student(self):
-        QMessageBox.information(self, "Добавление", "Функция добавления студента")
+        """Открывает форму добавления нового студента"""
+        try:
+            # Загружаем список кафедр
+            departments = self.db.execute_query("""
+                SELECT d.id, d.code, d.name, i.code as institute_code
+                FROM departments d
+                JOIN institutes i ON d.institute_id = i.id
+                ORDER BY i.code, d.code
+            """)
+
+            form = StudentForm(self.db, departments=departments)
+
+            if form.exec_() == QDialog.Accepted:
+                # Получаем данные из формы
+                student_data = form.student_data
+
+                # Получаем шифратор
+                encryptor = get_encryptor()
+
+                # Добавляем студента в БД
+                student_id = self.db.add_student_with_encryption(student_data, encryptor)
+
+                if student_id:
+                    QMessageBox.information(self, "Успех",
+                                            f"Студент успешно добавлен (ID: {student_id})")
+                    self.load_data()  # Обновляем таблицу
+                else:
+                    QMessageBox.critical(self, "Ошибка", "Не удалось добавить студента")
+
+        except Exception as e:
+            logger.error(f"Ошибка добавления студента: {e}")
+            QMessageBox.critical(self, "Ошибка", f"Ошибка добавления: {e}")
 
     def edit_student(self):
-        QMessageBox.information(self, "Редактирование", "Функция редактирования студента")
+        """Открывает форму редактирования выбранного студента"""
+        selected_row = self.table.currentRow()
+        if selected_row == -1:
+            QMessageBox.warning(self, "Предупреждение", "Выберите студента для редактирования")
+            return
+
+        try:
+            # Получаем ID студента
+            student_id_item = self.table.item(selected_row, 0)
+            if not student_id_item:
+                return
+
+            student_id = int(student_id_item.text())
+
+            # Загружаем данные студента
+            query = """
+                SELECT 
+                    s.*,
+                    d.code as department_code,
+                    i.code as institute_code
+                FROM students s
+                JOIN departments d ON s.department_id = d.id
+                JOIN institutes i ON d.institute_id = i.id
+                WHERE s.id = %s
+            """
+
+            result = self.db.execute_query(query, (student_id,))
+            if not result:
+                QMessageBox.warning(self, "Ошибка", "Студент не найден")
+                return
+
+            student_data = result[0]
+
+            # Загружаем список кафедр
+            departments = self.db.execute_query("""
+                SELECT d.id, d.code, d.name, i.code as institute_code
+                FROM departments d
+                JOIN institutes i ON d.institute_id = i.id
+                ORDER BY i.code, d.code
+            """)
+
+            # Создаем форму редактирования
+            form = StudentForm(self.db, student_data=student_data, departments=departments)
+
+            if form.exec_() == QDialog.Accepted:
+                # Получаем обновленные данные
+                updated_data = form.student_data
+
+                # Получаем шифратор
+                encryptor = get_encryptor()
+
+                # Обновляем студента в БД
+                success = self.db.update_student_with_encryption(
+                    student_id, updated_data, encryptor
+                )
+
+                if success:
+                    QMessageBox.information(self, "Успех", "Данные студента обновлены")
+                    self.load_data()  # Обновляем таблицу
+                else:
+                    QMessageBox.critical(self, "Ошибка", "Не удалось обновить данные")
+
+        except Exception as e:
+            logger.error(f"Ошибка редактирования студента: {e}")
+            QMessageBox.critical(self, "Ошибка", f"Ошибка редактирования: {e}")
 
     def delete_student(self):
-        QMessageBox.information(self, "Удаление", "Функция удаления студента")
+        """Удаляет выбранного студента"""
+        selected_row = self.table.currentRow()
+        if selected_row == -1:
+            QMessageBox.warning(self, "Предупреждение", "Выберите студента для удаления")
+            return
 
+        try:
+            # Получаем ID студента
+            student_id_item = self.table.item(selected_row, 0)
+            if not student_id_item:
+                return
+
+            student_id = int(student_id_item.text())
+
+            # Получаем информацию о студенте для подтверждения
+            last_name = self.table.item(selected_row, 1).text()
+            initials = self.table.item(selected_row, 2).text()
+
+            # Запрашиваем подтверждение
+            reply = QMessageBox.question(
+                self, "Подтверждение удаления",
+                f"Вы уверены, что хотите удалить студента:\n{last_name} {initials}?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
+
+            if reply == QMessageBox.Yes:
+                # Удаляем студента
+                query = "DELETE FROM students WHERE id = %s"
+                self.db.execute_query(query, (student_id,), fetch=False)
+
+                QMessageBox.information(self, "Успех", "Студент удален")
+                self.load_data()  # Обновляем таблицу
+
+        except Exception as e:
+            logger.error(f"Ошибка удаления студента: {e}")
+            QMessageBox.critical(self, "Ошибка", f"Ошибка удаления: {e}")
+            
     def show_search_dialog(self):
         QMessageBox.information(self, "Поиск", "Функция поиска")
 

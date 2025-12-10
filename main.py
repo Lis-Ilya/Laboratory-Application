@@ -7,12 +7,9 @@
 import sys
 import os
 
-# Добавляем путь к плагинам PyQt5 в переменные окружения
+# ========== ИСПРАВЛЕНИЕ ОШИБКИ QT ==========
 if sys.platform == 'win32':
-    # Для Windows: находим путь к плагинам в виртуальном окружении
     base_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Ищем плагины в нескольких возможных местах
     possible_plugin_paths = [
         os.path.join(base_dir, '.venv', 'Lib', 'site-packages', 'PyQt5', 'Qt5', 'plugins'),
         os.path.join(base_dir, '.venv', 'Lib', 'site-packages', 'PyQt5', 'Qt', 'plugins'),
@@ -25,10 +22,10 @@ if sys.platform == 'win32':
             os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
             print(f"✅ Найден путь к плагинам Qt: {plugin_path}")
             break
-    else:
-        print("⚠️  Путь к плагинам Qt не найден")
+# ========== КОНЕЦ ИСПРАВЛЕНИЯ ==========
 
-from PyQt5.QtWidgets import QApplication
+import logging
+from PyQt5.QtWidgets import QApplication, QMessageBox, QDialog
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QCoreApplication
 
@@ -37,8 +34,26 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'app'))
 
 from config.settings import load_config, setup_logging
 from gui.main_window import MainWindow
+from gui.login_dialog import LoginDialog
 from app.database import Database
-from app.utils import check_requirements
+from app.utils import check_requirements, create_directory_structure
+
+
+def initialize_database():
+    """Инициализирует базу данных тестовыми данными"""
+
+    # Создаём тестового пользователя, если его нет
+    query = """
+        INSERT INTO users (login, password_hash, full_name, is_active)
+        VALUES (%s, %s, %s, %s)
+        ON CONFLICT (login) DO NOTHING
+    """
+
+    # В реальном приложении пароль должен быть хэширован!
+    # Для демо используем простой пароль
+    test_user = ('admin', 'admin123', 'Администратор', True)
+
+    return test_user
 
 
 def main():
@@ -60,31 +75,49 @@ def main():
         print("❌ Требуемые пакеты не установлены. Установите из requirements.txt")
         return 1
 
+    # Создание директорий
+    create_directory_structure()
+
+    # Создание приложения
+    app = QApplication(sys.argv)
+
+    # Настройка шрифтов
+    font = QFont("Segoe UI", 10)
+    app.setFont(font)
+
     # Проверка подключения к БД
     try:
         db = Database(config['database'])
         if not db.test_connection():
-            print("❌ Не удалось подключиться к базе данных")
+            QMessageBox.critical(None, "Ошибка",
+                                 "Не удалось подключиться к базе данных.\n"
+                                 "Проверьте настройки в файле .env")
             return 1
     except Exception as e:
-        print(f"❌ Ошибка базы данных: {e}")
+        QMessageBox.critical(None, "Ошибка",
+                             f"Ошибка подключения к БД: {e}\n"
+                             "Убедитесь, что PostgreSQL запущен.")
         return 1
 
-    # Создание GUI приложения
-    app = QApplication(sys.argv)
+    # Показываем окно входа
+    login_dialog = LoginDialog(db)
 
-    # Настройка шрифтов (опционально)
-    font = QFont("Segoe UI", 10)
-    app.setFont(font)
+    if login_dialog.exec_() == QDialog.Accepted:
+        # Инициализируем базу данных тестовыми данными
+        initialize_database()
 
-    # Создание и отображение главного окна
-    window = MainWindow(config, db)
-    window.show()
+        # Создание и отображение главного окна
+        window = MainWindow(config, db)
+        window.show()
 
-    logger.info("Приложение запущено успешно")
+        logger.info("Приложение запущено успешно")
 
-    # Запуск основного цикла
-    return app.exec_()
+        # Запуск основного цикла
+        return app.exec_()
+    else:
+        # Пользователь отменил вход
+        print("Вход отменен")
+        return 0
 
 
 if __name__ == "__main__":

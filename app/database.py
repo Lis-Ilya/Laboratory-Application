@@ -68,6 +68,26 @@ class Database:
             logger.error(f"Ошибка тестирования подключения: {e}")
             return False
 
+    def authenticate_user(self, username, password):
+        """Аутентифицирует пользователя"""
+        try:
+            query = """
+                SELECT id, login, full_name, is_active
+                FROM users 
+                WHERE login = %s AND is_active = TRUE
+            """
+            result = self.execute_query(query, (username,))
+
+            if result:
+                # В реальном приложении здесь проверка хэша пароля
+                # Для демо просто возвращаем пользователя
+                return result[0]
+            return None
+
+        except Exception as e:
+            logger.error(f"Ошибка аутентификации: {e}")
+            return None
+
     def execute_query(self, query, params=None, fetch=True):
         """Выполняет SQL запрос"""
         try:
@@ -124,3 +144,79 @@ class Database:
             RETURNING id
         """
         return self.execute_query(query, student_data, fetch=True)
+
+    def add_student_with_encryption(self, student_data, encryptor):
+        """Добавляет студента с шифрованием данных"""
+        try:
+            # Шифруем конфиденциальные поля
+            fields_to_encrypt = ['phone', 'record_book_number']
+            encrypted_data = encryptor.encrypt_fields(student_data, fields_to_encrypt)
+
+            query = """
+                INSERT INTO students 
+                (last_name, initials, birth_year, phone_encrypted, 
+                 record_book_number_encrypted, admission_year, group_name,
+                 department_id, city_before, created_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING id
+            """
+
+            params = (
+                encrypted_data['last_name'],
+                encrypted_data['initials'],
+                encrypted_data['birth_year'],
+                encrypted_data.get('phone_encrypted'),
+                encrypted_data.get('record_book_number_encrypted'),
+                encrypted_data['admission_year'],
+                encrypted_data['group_name'],
+                encrypted_data['department_id'],
+                encrypted_data['city_before'],
+                1  # TODO: использовать ID текущего пользователя
+            )
+
+            result = self.execute_query(query, params, fetch=True)
+
+            if result:
+                logger.info(f"Добавлен студент с ID {result[0]['id']}")
+                return result[0]['id']
+            return None
+
+        except Exception as e:
+            logger.error(f"Ошибка добавления студента: {e}")
+            raise
+
+    def update_student_with_encryption(self, student_id, student_data, encryptor):
+        """Обновляет данные студента с шифрованием"""
+        try:
+            # Шифруем конфиденциальные поля, если они предоставлены
+            fields_to_encrypt = ['phone', 'record_book_number']
+            encrypted_data = encryptor.encrypt_fields(student_data, fields_to_encrypt)
+
+            # Строим динамический запрос
+            set_parts = []
+            params = []
+
+            for field, value in encrypted_data.items():
+                if field != 'id':
+                    set_parts.append(f"{field} = %s")
+                    params.append(value)
+
+            params.append(student_id)
+
+            query = f"""
+                UPDATE students 
+                SET {', '.join(set_parts)}, updated_at = CURRENT_TIMESTAMP
+                WHERE id = %s
+                RETURNING id
+            """
+
+            result = self.execute_query(query, tuple(params), fetch=True)
+
+            if result:
+                logger.info(f"Обновлён студент с ID {student_id}")
+                return True
+            return False
+
+        except Exception as e:
+            logger.error(f"Ошибка обновления студента: {e}")
+            raise
