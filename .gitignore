@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# PyCharm
+.idea/
+*.iml
+out/
+workspace.xml
+
+# Database
+*.db
+*.sqlite3
+*.sqlite
+
+# Environment variables
+.env
+.env.local
+
+# Secrets
+secret.key
+*.pem
+*.p12
+
+# Logs
+*.log
+logs/
+
+# Application specific
+exports/
+backups/
+templates/student_report.docx  # шаблоны не коммитим
+templates/student_report.xlsx
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test outputs
+test_output/
+*.test.db

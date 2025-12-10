@@ -1,0 +1,9 @@
+PyQt5==5.15.11
+psycopg2-binary==2.9.11
+cryptography==46.0.3
+python-docx==1.2.0
+openpyxl==3.1.5
+python-dotenv==1.2.1
+SQLAlchemy==2.0.45
+setuptools==80.9.0
+importlib_metadata==7.0.0
