@@ -74,7 +74,7 @@ def test_env_file():
 
     print("\n🔍 Проверка конфигурации...")
 
-    if os.path.exists('.env'):
+    if os.path.exists('../.env'):
         print("  ✅ Файл .env существует")
         return True
     else:

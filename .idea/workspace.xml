@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ff03e87-3766-46d8-b750-6cc97b625f01" name="Changes" comment="Initial commit: создана структура проекта">
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/encryption.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/encryption.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/login_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/login_dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/student_form.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/student_form.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/run_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_db_connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_db_connection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +84,10 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Нора лисенка\Институт\ИТиП\Laboratory Application" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Нора лисенка\Институт\ИТиП\Laboratory Application\app" />
+      <recent name="C:\Нора лисенка\Институт\ИТиП\Laboratory Application\tests" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="generate_key" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -101,7 +103,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/generate_key.py" />
+      <option name="SCRIPT_NAME" value="C:\Нора лисенка\Институт\ИТиП\Laboratory Application\app\generate_key.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -145,7 +147,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_tests.py" />
+      <option name="SCRIPT_NAME" value="C:\Нора лисенка\Институт\ИТиП\Laboratory Application\tests\run_tests.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -189,7 +191,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_db_connection.py" />
+      <option name="SCRIPT_NAME" value="C:\Нора лисенка\Институт\ИТиП\Laboratory Application\tests\test_db_connection.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -247,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765382579327</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Initial commit: создана структура проекта">
+      <option name="closed" value="true" />
+      <created>1765385354990</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1765385354990</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
