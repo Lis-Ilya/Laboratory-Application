@@ -91,8 +91,9 @@ class Database:
     def execute_query(self, query, params=None, fetch=True):
         """Выполняет SQL запрос"""
         try:
-            if not self.connection or self.connection.closed:
-                self.connect()
+            # Всегда создаём новое соединение для каждого запроса
+            # чтобы избежать проблем с потоками
+            self.connect()
 
             self.cursor.execute(query, params or ())
 
@@ -109,6 +110,9 @@ class Database:
             if self.connection:
                 self.connection.rollback()
             raise
+        finally:
+            # Всегда закрываем соединение после запроса
+            self.disconnect()
 
     def get_students(self, limit=100):
         """Получает список студентов"""

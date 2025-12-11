@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QTableWidget, QTableWidgetItem,
     QMessageBox, QMenuBar, QMenu, QStatusBar,
-    QLabel, QSplitter, QHeaderView, QTabWidget
+    QLabel, QSplitter, QHeaderView, QTabWidget,
+    QDialog
 )
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QIcon
@@ -353,7 +354,7 @@ class MainWindow(QMainWindow):
         except Exception as e:
             logger.error(f"Ошибка удаления студента: {e}")
             QMessageBox.critical(self, "Ошибка", f"Ошибка удаления: {e}")
-            
+
     def show_search_dialog(self):
         QMessageBox.information(self, "Поиск", "Функция поиска")
 
